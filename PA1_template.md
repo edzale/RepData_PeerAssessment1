@@ -2,7 +2,11 @@
 title: "Personal activity monitoring data analysis"
 author: "E. Dzale"
 date: "18 septembre 2015"
-output: html_document
+output: 
+  html_document: 
+    fig_caption: yes
+    keep_md: yes
+    toc: yes
 ---
 ### Introduction
 This document contains analysis of personal activity data collected from a device. The data have been collected from an anonymous individual during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day. The dataset has been downloaded from <https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip> the 18 of September 2015. 
@@ -97,7 +101,7 @@ stepsperday
 hist(stepsperday$sumsteps, breaks=15, main = "Number of Steps Per Day", xlab = "Total Number of Steps", col = 'red', cex.main = .9)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![plot of chunk figure1](figure/figure1-1.png) 
 ####Calculating and reporting the mean and median of the total number of steps taken per day
 
 ```r
@@ -116,7 +120,7 @@ legend('topright', lty = 1, lwd = 3, col = c("blue", "black"),
       )
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk figure2](figure/figure2-1.png) 
 
 ###The average daily activity pattern
 ####Ploting the average steps per 5 minutes interval
@@ -128,7 +132,7 @@ with(stepsperInterv, {
 })
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+![plot of chunk steps_per_interval](figure/steps_per_interval-1.png) 
 ####The interval with the maximum steps is:
 
 
@@ -210,7 +214,7 @@ legend('topright', lty = 1, lwd = 3, col = c("blue", "black"),
       )
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk figure3](figure/figure3-1.png) 
 #####We can see that the values of the mean and median are now close.
 
 ###Comparing activity patterns of weekdays and weekends
@@ -253,6 +257,6 @@ xyplot(avsteps~interval | daytype, data = sum_imputed_activity,
       layout = c(1,2))
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
+![plot of chunk figure4](figure/figure4-1.png) 
 
 

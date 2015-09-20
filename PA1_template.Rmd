@@ -2,7 +2,11 @@
 title: "Personal activity monitoring data analysis"
 author: "E. Dzale"
 date: "18 septembre 2015"
-output: html_document
+output: 
+  html_document: 
+    fig_caption: yes
+    keep_md: yes
+    toc: yes
 ---
 ### Introduction
 This document contains analysis of personal activity data collected from a device. The data have been collected from an anonymous individual during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day. The dataset has been downloaded from <https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip> the 18 of September 2015. 
@@ -15,7 +19,7 @@ data<-mutate(data, date=as.Date(date))
 ```
 ###The mean total number of steps taken per day. The missing values are ignored in this part
 ####The total number of steps taken per day.
-```{r}
+```{r stepsperday}
 library(data.table)
 tdata<-data.table(data)
 stepsperday<-tdata[, list(sumsteps=sum(steps, na.rm=TRUE)), by = date]
@@ -24,11 +28,11 @@ stepsperday
 
 
 ####Histogram of the total number of steps taken each day. We can notice that the histogram confirms the values in the previous table: only 2 days report more than 20000 steps in total.
-```{r}
+```{r figure1}
 hist(stepsperday$sumsteps, breaks=15, main = "Number of Steps Per Day", xlab = "Total Number of Steps", col = 'red', cex.main = .9)
 ```
 ####Calculating and reporting the mean and median of the total number of steps taken per day
-```{r}
+```{r figure2}
 hist(stepsperday$sumsteps, breaks=15, main = "Number of Steps Per Day", xlab = "Total Number of Steps", col = 'red', cex.main = .9)
 #Mean and median
 meansteps = round(mean(stepsperday$sumsteps), 1)
@@ -46,7 +50,7 @@ legend('topright', lty = 1, lwd = 3, col = c("blue", "black"),
 
 ###The average daily activity pattern
 ####Ploting the average steps per 5 minutes interval
-```{r}
+```{r steps_per_interval}
 stepsperInterv<-tdata[, list(avsteps=mean(steps, na.rm=TRUE)), by = interval]
 with(stepsperInterv, {
   plot(avsteps, type="l", main="Average steps per 5 minutes interval", xlab="Intervals", ylab="Average steps")
@@ -54,19 +58,19 @@ with(stepsperInterv, {
 ```
 ####The interval with the maximum steps is:
 
-```{r}
+```{r interval_with_max_steps}
 max_steps = stepsperInterv[which.max(avsteps), ]
 max_steps
 ```
 ###Imputing missing values
 ####Total number of missing values in the dataset
-```{r}
+```{r number_missing}
 nbMissing = sum(is.na(data$steps))
 nbMissing
 ```
 ####Filling in all of the missing values in the dataset: I decided to fill the missing values with the mean for the related interval. I use the floor function to round the means towards zero to avoid using fractional steps.
 
-```{r}
+```{r figure3}
 stepsperInterv$avsteps <- floor(stepsperInterv$avsteps)
 # Merge the original data with the one with average steps per interval based on the intervals
 setkey(stepsperInterv, "interval")
@@ -112,7 +116,7 @@ legend('topright', lty = 1, lwd = 3, col = c("blue", "black"),
 
 ###Comparing activity patterns of weekdays and weekends
 
-```{r}
+```{r figure4}
 #Make Function To Return Either "Weekday" or "Weekend". The weekdays functions returns days in french on my computer. You may want to change to saturday and sunday if you are using an english config.
 fdaytype = function(x){
         if(x %in% c('samedi', 'dimanche')){
